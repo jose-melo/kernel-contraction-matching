@@ -1,0 +1,19 @@
+{
+  "dataset": "6_cardio",
+  "seed": 2,
+  "rho": 1.0,
+  "epochs": 100,
+  "final_auroc": {
+    "tccm": 0.95735891523935,
+    "ae": 0.957255983750549,
+    "deepsvdd": 0.9573520531400966
+  },
+  "peak_auroc": {
+    "tccm": 0.9638435990338164,
+    "ae": 0.958923473869126,
+    "deepsvdd": 0.9638435990338164
+  },
+  "final_spread": 0.00010293148880102798,
+  "traj_spread": 0.01557010320597274,
+  "tccm_eq_deepsvdd": false
+}

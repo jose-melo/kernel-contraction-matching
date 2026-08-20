@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kar-kcm"
+version = "1.0.0"
+description = "Kernel Contraction Matching and Kernel-Anchored Regularization for fixed-target anomaly detection"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+    { name = "José Lucas De Melo Costa" },
+    { name = "Fabrice Popineau" },
+    { name = "Arpad Rimmel" },
+    { name = "Bich-Liên Doan" },
+]
+keywords = [
+    "anomaly detection",
+    "outlier detection",
+    "kernel methods",
+    "self-supervised learning",
+    "scikit-learn",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "scikit-learn>=1.6,<2",
+]
+
+[project.optional-dependencies]
+kar = ["torch>=2.0"]
+bench = ["pandas>=2.0"]
+paper = ["torch>=2.0", "pandas>=2.0"]
+test = ["pytest>=7", "pandas>=2.0"]
+
+[project.urls]
+Homepage = "https://github.com/jose-melo/kernel-contraction-matching"
+Repository = "https://github.com/jose-melo/kernel-contraction-matching"
+Paper = "https://doi.org/10.1145/3799682.3841143"
+Changelog = "https://github.com/jose-melo/kernel-contraction-matching/blob/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+include = ["karkcm*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "karkcm/estimator.py", "karkcm/kcm.py", "karkcm/data.py"]
+addopts = "--doctest-modules"

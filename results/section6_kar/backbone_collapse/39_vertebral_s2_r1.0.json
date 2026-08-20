@@ -1,0 +1,19 @@
+{
+  "dataset": "39_vertebral",
+  "seed": 2,
+  "rho": 1.0,
+  "epochs": 100,
+  "final_auroc": {
+    "tccm": 0.4526984126984127,
+    "ae": 0.4428571428571429,
+    "deepsvdd": 0.453015873015873
+  },
+  "peak_auroc": {
+    "tccm": 0.6092063492063492,
+    "ae": 0.5301587301587302,
+    "deepsvdd": 0.6092063492063492
+  },
+  "final_spread": 0.01015873015873009,
+  "traj_spread": 0.22000000000000008,
+  "tccm_eq_deepsvdd": false
+}

@@ -1,0 +1,71 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  no-extras:
+    name: "no torch (py${{ matrix.python-version }})"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install without any extra that pulls torch
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+      - name: PyTorch must not be installed
+        run: python -c "import importlib.util, sys; sys.exit(importlib.util.find_spec('torch') is not None)"
+      - name: Importing karkcm must not import torch
+        run: python -c "import karkcm, sys; sys.exit('torch' in sys.modules)"
+      - name: Tests that do not need the ADBench corpus
+        run: pytest -q -k "not paper_regression and not parity"
+
+  sklearn-floor:
+    name: "declared scikit-learn floor"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install the oldest scikit-learn the metadata allows
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+          pip install "scikit-learn==1.6.0"
+      - name: Tests that do not need the ADBench corpus
+        run: pytest -q -k "not paper_regression and not parity"
+
+  paper:
+    name: "paper reproduction (py3.12)"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install with torch and pandas
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[paper,test]"
+      - name: Fetch the eight datasets the tests use (about 1 MB)
+        run: >
+          python scripts/download_datasets.py --datasets
+          39_vertebral 2_annthyroid 29_Pima 18_Ionosphere
+          43_WDBC 6_cardio 24_mnist 30_satellite
+      - name: Tests
+        run: pytest -q
+      - name: pyflakes
+        run: |
+          pip install pyflakes
+          pyflakes karkcm tests scripts benchmarks examples

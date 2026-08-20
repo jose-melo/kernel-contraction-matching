@@ -1,0 +1,19 @@
+{
+  "dataset": "43_WDBC",
+  "seed": 0,
+  "rho": 1.0,
+  "epochs": 100,
+  "final_auroc": {
+    "tccm": 0.9938547486033519,
+    "ae": 0.9938547486033519,
+    "deepsvdd": 0.9938547486033519
+  },
+  "peak_auroc": {
+    "tccm": 0.9944134078212291,
+    "ae": 0.9944134078212291,
+    "deepsvdd": 0.9944134078212291
+  },
+  "final_spread": 0.0,
+  "traj_spread": 0.0005586592178772332,
+  "tccm_eq_deepsvdd": true
+}

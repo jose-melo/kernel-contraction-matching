@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "KAR / KCM: kernel-anchored locality regularization for fixed-target anomaly detection"
+repository-code: "https://github.com/jose-melo/kernel-contraction-matching"
+license: MIT
+authors:
+  - family-names: "De Melo Costa"
+    given-names: "José Lucas"
+    orcid: "https://orcid.org/0009-0007-5372-9101"
+  - family-names: "Popineau"
+    given-names: "Fabrice"
+    orcid: "https://orcid.org/0000-0002-2941-9046"
+  - family-names: "Rimmel"
+    given-names: "Arpad"
+    orcid: "https://orcid.org/0009-0009-7028-3644"
+  - family-names: "Doan"
+    given-names: "Bich-Liên"
+    orcid: "https://orcid.org/0009-0001-5853-2486"
+preferred-citation:
+  type: conference-paper
+  title: "Mitigating Convergence Collapse in Fixed-Target Anomaly Detectors via Kernel-Anchored Locality Regularization"
+  collection-title: "Proceedings of the 35th ACM International Conference on Information and Knowledge Management (CIKM '26)"
+  year: 2026
+  doi: "10.1145/3799682.3841143"
+  authors:
+    - family-names: "De Melo Costa"
+      given-names: "José Lucas"
+    - family-names: "Popineau"
+      given-names: "Fabrice"
+    - family-names: "Rimmel"
+      given-names: "Arpad"
+    - family-names: "Doan"
+      given-names: "Bich-Liên"

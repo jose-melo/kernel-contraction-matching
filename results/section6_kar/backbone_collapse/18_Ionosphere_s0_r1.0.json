@@ -1,0 +1,19 @@
+{
+  "dataset": "18_Ionosphere",
+  "seed": 0,
+  "rho": 1.0,
+  "epochs": 100,
+  "final_auroc": {
+    "tccm": 0.9773844641101277,
+    "ae": 0.977173760359601,
+    "deepsvdd": 0.9773844641101277
+  },
+  "peak_auroc": {
+    "tccm": 0.9782272791122348,
+    "ae": 0.9775951678606547,
+    "deepsvdd": 0.9782272791122348
+  },
+  "final_spread": 0.00021070375052667512,
+  "traj_spread": 0.007866273352998943,
+  "tccm_eq_deepsvdd": false
+}

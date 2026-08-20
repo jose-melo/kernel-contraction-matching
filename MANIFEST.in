@@ -1,0 +1,22 @@
+include LICENSE
+include CHANGELOG.md
+include CITATION.cff
+include Makefile
+include MANIFEST.in
+include README.md
+include requirements.txt
+
+recursive-include benchmarks *.py
+recursive-include examples *.md *.py
+recursive-include scripts *.py
+recursive-include tests *.py
+
+include results/section4_kcm/kcm_per_run_47.csv
+include results/section4_kcm/kcm_summary_47.csv
+include results/section4_kcm/kcm_timing_47.csv
+include results/section4_kcm/leaderboard.csv
+
+prune datasets
+prune results/figures
+prune results/section3_collapse
+prune results/section6_kar

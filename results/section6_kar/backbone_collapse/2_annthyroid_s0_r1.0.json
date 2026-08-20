@@ -1,0 +1,19 @@
+{
+  "dataset": "2_annthyroid",
+  "seed": 0,
+  "rho": 1.0,
+  "epochs": 100,
+  "final_auroc": {
+    "tccm": 0.9434965968506962,
+    "ae": 0.9438679823038484,
+    "deepsvdd": 0.9449456181573213
+  },
+  "peak_auroc": {
+    "tccm": 0.9606348275276965,
+    "ae": 0.9526109914362222,
+    "deepsvdd": 0.9582076185146605
+  },
+  "final_spread": 0.0014490213066250535,
+  "traj_spread": 0.1141395038380244,
+  "tccm_eq_deepsvdd": false
+}
