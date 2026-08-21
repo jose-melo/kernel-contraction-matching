@@ -38,10 +38,12 @@ pip install kar-kcm                 # KCM only, no PyTorch
 pip install "kar-kcm[kar]"          # adds KAR, which needs PyTorch
 ```
 
-From source, before the first release lands on PyPI:
+Reproducing the paper needs the repository itself, which carries the per-run records and the
+experiment modules:
 
 ```bash
-pip install git+https://github.com/jose-melo/kernel-contraction-matching
+git clone https://github.com/jose-melo/kernel-contraction-matching
+cd kernel-contraction-matching && pip install -e ".[paper]"
 ```
 
 ## The problem: fixed-target detectors get worse as they train
