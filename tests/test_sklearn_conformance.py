@@ -52,11 +52,27 @@ def expected_failures(estimator):
     return EXPECTED_FAILED_CHECKS if _EXCUSED[repr(estimator)] else {}
 
 
+ENVIRONMENT_SKIPS = {"check_array_api_input"}
+
+
 def _tally(results):
     out = {}
     for entry in results:
         out[entry["status"]] = out.get(entry["status"], 0) + 1
     return out
+
+
+def _failed(results):
+    """Return the checks that genuinely failed, keeping environment skips separate.
+
+    A skip is not a pass, so it must not be swallowed, but it is also not a defect.
+    scikit-learn 1.9 added ``check_array_api_input``, which reports ``skipped``
+    unless ``SCIPY_ARRAY_API`` is set in the environment. Counting every non-pass as
+    a failure turned the whole conformance suite red on 1.9 while 1.8 stayed green.
+    Any skip outside `ENVIRONMENT_SKIPS` is still surfaced by
+    :func:`test_skips_are_only_the_known_environment_ones`.
+    """
+    return {e["check_name"] for e in results if e["status"] == "failed"}
 
 
 def test_check_estimator():
@@ -81,8 +97,9 @@ def test_check_estimator():
         )
     tally = _tally(results)
     assert tally.get("failed", 0) == 0
-    assert tally.get("skipped", 0) == 0
-    assert tally["passed"] + tally["xfail"] == len(results)
+    skipped = {e["check_name"] for e in results if e["status"] == "skipped"}
+    assert skipped <= ENVIRONMENT_SKIPS, skipped
+    assert tally["passed"] + tally["xfail"] + len(skipped) == len(results)
     assert {e["check_name"] for e in results if e["status"] == "xfail"} == set(
         EXPECTED_FAILED_CHECKS
     )
@@ -99,8 +116,7 @@ def test_expected_failures_are_exactly_the_one_documented_check():
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         results = check_estimator(KCM(), on_fail=None)
-    failed = [e for e in results if e["status"] != "passed"]
-    assert {e["status"] for e in failed} == {"failed"}
+    failed = [e for e in results if e["status"] == "failed"]
     assert {e["check_name"] for e in failed} == set(EXPECTED_FAILED_CHECKS)
     for name in EXPECTED_FAILED_CHECKS:
         assert any(e["check_name"] == name for e in failed)
@@ -124,7 +140,7 @@ def test_novelty_false_passes_check_estimator_with_nothing_excused():
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         results = check_estimator(KCM(novelty=False), on_fail=None)
-    assert [e for e in results if e["status"] != "passed"] == []
+    assert _failed(results) == set()
 
 
 def test_novelty_hides_exactly_one_half_of_the_api():
@@ -158,8 +174,7 @@ def test_the_excuse_is_pinned_per_configuration(estimator, excused):
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         results = check_estimator(estimator, on_fail=None)
-    failed = {e["check_name"] for e in results if e["status"] != "passed"}
-    assert failed == ({"check_outliers_train"} if excused else set())
+    assert _failed(results) == ({"check_outliers_train"} if excused else set())
 
 
 def test_novelty_changes_which_checks_are_generated():
@@ -212,3 +227,13 @@ def test_pipeline_forwards_the_novelty_gate(novelty):
         labels = make_kcm_pipeline(novelty=False).fit_predict(X)
         assert set(np.unique(labels)) == {-1, 1}
         assert int((labels == -1).sum()) == 22 == int(0.1 * len(X))
+
+
+@pytest.mark.parametrize("estimator", ESTIMATORS, ids=repr)
+def test_skips_are_only_the_known_environment_ones(estimator):
+    """A check that silently stops running is as invisible as one that is excused."""
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        results = check_estimator(estimator, on_fail=None)
+    skipped = {e["check_name"] for e in results if e["status"] == "skipped"}
+    assert skipped <= ENVIRONMENT_SKIPS, skipped
